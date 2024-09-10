@@ -33,6 +33,10 @@
 #define WS2812_DI_PIN GP16 // The pin connected to the data pin of the LEDs
 #define RGBLIGHT_LED_COUNT 1                     // The number of LEDs connected
 
+// Set good default RGB light values
+#define RGBLIGHT_DEFAULT_HUE 201
+#define RGBLIGHT_DEFAULT_SAT 230
+#define RGBLIGHT_DEFAULT_VAL 70
 
 #define MAX_DEFERRED_EXECUTORS 32
 

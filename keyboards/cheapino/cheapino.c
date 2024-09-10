@@ -5,12 +5,6 @@
 // initial RGB flash is finished
 uint8_t _hue_countdown = 50;
 
-// These are to keep track of user selected color, so we
-// can restore it after RGB flash
-uint8_t _hue;
-uint8_t _saturation;
-uint8_t _value;
-
 // Do a little 2.5 seconds display of the different colors
 // Use the deferred executor so the LED flash dance does not
 // stop us from using the keyboard.
@@ -20,7 +14,11 @@ uint32_t flash_led(uint32_t next_trigger_time, void *cb_arg) {
     _hue_countdown--;
     if (_hue_countdown == 0) {
         // Finished, reset to user chosen led color
-        rgblight_sethsv(_hue, _saturation, _value);
+        rgblight_sethsv(
+                RGBLIGHT_DEFAULT_HUE,
+                RGBLIGHT_DEFAULT_SAT,
+                RGBLIGHT_DEFAULT_VAL
+        );
         return 0;
     } else {
         return 50;
@@ -32,11 +30,6 @@ void keyboard_post_init_user(void) {
     //debug_matrix=true;
     //debug_keyboard=true;
     //debug_mouse=true;
-
-    // Store user selected rgb hsv:
-    _hue = rgblight_get_hue();
-    _saturation = rgblight_get_sat();
-    _value = rgblight_get_val();
 
     // Flash a little on start
     defer_exec(50, flash_led, NULL);
