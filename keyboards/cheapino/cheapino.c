@@ -35,34 +35,45 @@ void keyboard_post_init_user(void) {
     defer_exec(50, flash_led, NULL);
 }
 
-// Make the builtin RGB led show different colors per layer:
-// This seemed like a good idea but turned out pretty annoying,
-// to me at least... Uncomment the lines below to enable
-/*
+// Make the builtin RGB led show different colors per layer
 uint8_t get_hue(uint8_t layer) {
     switch (layer) {
         case 6:
-            return 169;
+            return 201;
         case 5:
             return 43;
         case 4:
+            return 127;
+        case 7:
+            return 169;
+        case 8:
             return 85;
-        case 3:
-            return 120;
-        case 2:
-            return 180;
-        case 1:
-            return 220;
-        default:
+        case 9:
             return 0;
+        default:
+            return RGBLIGHT_DEFAULT_HUE;
+    }
+}
+
+// Required to display white
+uint8_t get_sat(uint8_t layer) {
+    switch (layer) {
+        case 9:
+        case 8:
+        case 7:
+        case 6:
+        case 5:
+        case 4:
+            return 230;
+        default:
+            return RGBLIGHT_DEFAULT_HUE;
     }
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    uint8_t sat = rgblight_get_sat();
-    uint8_t val = rgblight_get_val();
+    uint8_t val = RGBLIGHT_DEFAULT_VAL;
+    uint8_t sat = get_sat(get_highest_layer(state));
     uint8_t hue = get_hue(get_highest_layer(state));
     rgblight_sethsv(hue, sat, val);
     return state;
 }
-*/
